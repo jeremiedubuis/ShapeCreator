@@ -1,0 +1,87 @@
+
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <title>AreaSelection.js</title>
+
+    <style>
+        .image-wrapper {
+            position: relative;
+            margin-top: 100px;
+            width: 800px;
+            height: 500px;
+        }
+
+        .canvas-image,
+        .canvas-selection{
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .canvas-selection {
+            z-index: 2;
+        }
+    </style>
+</head>
+<body>
+
+
+<div class="image-wrapper">
+    <canvas class="canvas-image">
+    </canvas>
+    <canvas class="canvas-selection"></canvas>
+</div>
+<ul>
+    <li><button class="js-rectangle"><img src="img/select.png" alt="rectangle selection" /></button></li>
+    <li><button class="js-freehand">freehand</button></li>
+    <li><button class="js-export">Export</button></li>
+</ul>
+
+<script src="js/ShapeCreator.build.js"></script>
+<script type="text/javascript">
+    var imgWrapper = document.getElementsByClassName('image-wrapper')[0];
+    var imgCanvas = imgWrapper.getElementsByClassName('canvas-image')[0];
+    var img = new Image();
+
+    imgCanvas.width = imgWrapper.offsetWidth;
+    imgCanvas.height = imgWrapper.offsetHeight;
+
+    img.onload = function() {
+        imgCanvas.getContext('2d').drawImage(img, 0, 0, imgCanvas.width, imgCanvas.height * (img.width / img.height));
+    };
+    img.src='image.jpg';
+    var aS = new ShapeCreator(imgWrapper, imgWrapper.getElementsByClassName('canvas-selection')[0]);
+
+    document.getElementsByClassName('js-rectangle')[0].addEventListener('click', function() {
+        aS.startSelection('rectangle', {
+            rounded: true,
+            renderPoints: false,
+            renderingContext: function(c2d) {
+                c2d.lineWidth= 2;
+                c2d.shadowColor = '#000';
+                c2d.shadowBlur = 10;
+                c2d.shadowOffsetX =1;
+                c2d.shadowOffsetY = 1;
+            }
+        });
+    });
+    document.getElementsByClassName('js-freehand')[0].addEventListener('click', function() {
+        aS.startSelection('freehand', {
+            renderingContext: function(c2d) {
+                c2d.lineWidth= 3;
+                c2d.shadowColor = '#000';
+                c2d.shadowBlur = 10;
+                c2d.shadowOffsetX =1;
+                c2d.shadowOffsetY = 1;
+            }
+        });
+    });
+    document.getElementsByClassName('js-export')[0].addEventListener('click', function() {
+        console.log(aS.export());
+    });
+</script>
+
+</body>
+</html>
