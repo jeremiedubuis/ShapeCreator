@@ -52,7 +52,7 @@ ShapeCreator.prototype = {
                 onMouseup: this.transformation.onMouseup.bind(this),
                 onMousemove: this.transformation.onMousemove.bind(this)
             },
-            drawPoint: this.o.drawPoint ? this.o.drawPoint : this.drawPoint.bind(this)
+            drawPoint: this.o.drawPoint ? this.o.drawPoint.bind(this) : this.drawPoint.bind(this)
         };
     },
 
