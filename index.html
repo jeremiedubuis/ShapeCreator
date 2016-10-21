@@ -52,18 +52,23 @@
         imgCanvas.getContext('2d').drawImage(img, 0, 0, imgCanvas.width, imgCanvas.height * (img.width / img.height));
     };
     img.src='image.jpg';
-    var aS = new ShapeCreator(imgWrapper, imgWrapper.getElementsByClassName('canvas-selection')[0]);
+    var aS = new ShapeCreator(imgWrapper, imgWrapper.getElementsByClassName('canvas-selection')[0], {background: true, drawPoint: function(point) {
+        this.c2d.beginPath();
+        this.c2d.arc(point.x,point.y, 4, 0, Math.PI * 2);
+        this.c2d.fill();
+        this.c2d.closePath();
+    }});
 
     document.getElementsByClassName('js-rectangle')[0].addEventListener('click', function() {
         aS.startSelection('rectangle', {
             rounded: true,
-            renderPoints: false,
             renderingContext: function(c2d) {
                 c2d.lineWidth= 2;
                 c2d.shadowColor = '#000';
                 c2d.shadowBlur = 10;
                 c2d.shadowOffsetX =1;
                 c2d.shadowOffsetY = 1;
+                c2d.setLineDash([5,5]);
             }
         });
     });

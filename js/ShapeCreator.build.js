@@ -524,10 +524,12 @@ ShapeCreator.prototype = {
                 } else {
                     this.drawRoundedRect(points);
                 }
-                this.c2d.globalCompositeOperation = 'destination-out';
-                this.c2d.fill();
-                this.c2d.globalCompositeOperation = 'source-over';
                 this.c2d.stroke();
+                if (this.o.background) {
+                    this.c2d.globalCompositeOperation = 'destination-out';
+                    this.c2d.fill();
+                    this.c2d.globalCompositeOperation = 'source-over';
+                }
                 break;
         }
         this.c2d.restore();
