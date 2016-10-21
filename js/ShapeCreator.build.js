@@ -493,7 +493,6 @@ ShapeCreator.prototype = {
         this.c2d.save();
         this.c2d.strokeStyle='white';
         this.c2d.lineWidth = 3;
-        if (shape.renderingContext) shape.renderingContext(this.c2d);
         switch (shape.type) {
             case 'freehand':
 
@@ -511,7 +510,6 @@ ShapeCreator.prototype = {
                         ( _point2.y+_point1.y ) / 2
                     );
                 }
-                this.c2d.stroke();
 
                 break;
             default:
@@ -524,7 +522,6 @@ ShapeCreator.prototype = {
                 } else {
                     this.drawRoundedRect(points);
                 }
-                this.c2d.stroke();
                 if (this.o.background) {
                     this.c2d.globalCompositeOperation = 'destination-out';
                     this.c2d.fill();
@@ -532,6 +529,8 @@ ShapeCreator.prototype = {
                 }
                 break;
         }
+        if (shape.renderingContext) shape.renderingContext(this.c2d);
+        this.c2d.stroke();
         this.c2d.restore();
     },
 
@@ -585,6 +584,7 @@ ShapeCreator.prototype = {
         this.c2d.rect(0,0,this.canvas.width, this.canvas.height);
         this.c2d.fillStyle = 'rgba(0,0,0,0.5)';
         this.c2d.fill();
+        this.c2d.closePath();
     },
 
     resetSelection: function() {
