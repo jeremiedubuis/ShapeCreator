@@ -493,10 +493,10 @@ ShapeCreator.prototype = {
         this.c2d.save();
         this.c2d.strokeStyle='white';
         this.c2d.lineWidth = 3;
+        this.c2d.beginPath();
         switch (shape.type) {
             case 'freehand':
 
-                this.c2d.beginPath();
                 var _point1;
                 var _point2;
                 this.c2d.moveTo(points[0].x,points[0].y);
@@ -518,10 +518,10 @@ ShapeCreator.prototype = {
                     for (var i=1, length= points.length; i<length; ++i) {
                         this.c2d.lineTo(points[i].x,points[i].y);
                     }
-                    this.c2d.closePath();
                 } else {
                     this.drawRoundedRect(points);
                 }
+                this.c2d.closePath();
                 if (this.o.background) {
                     this.c2d.globalCompositeOperation = 'destination-out';
                     this.c2d.fill();
@@ -542,7 +542,6 @@ ShapeCreator.prototype = {
         var largestX = Math.max(points[0].x,points[1].x,points[2].x,points[3].x);
         var largestY = Math.max(points[0].y,points[1].y,points[2].y,points[3].y);
 
-        this.c2d.beginPath();
         this.c2d.moveTo(smallestX+this.borderRadius,smallestY);
         this.c2d.lineTo(largestX-this.borderRadius,smallestY);
         this.c2d.quadraticCurveTo(largestX, smallestY, largestX, smallestY+ this.borderRadius);
@@ -552,7 +551,6 @@ ShapeCreator.prototype = {
         this.c2d.quadraticCurveTo(smallestX, largestY, smallestX, largestY - this.borderRadius);
         this.c2d.lineTo(smallestX,smallestY+this.borderRadius)
         this.c2d.quadraticCurveTo(smallestX, smallestY, smallestX+this.borderRadius, smallestY);
-        this.c2d.closePath();
     },
 
     renderPoints: function(shape,points) {
