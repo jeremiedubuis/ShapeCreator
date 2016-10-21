@@ -19,8 +19,8 @@ ShapeCreator.prototype = {
 
         var _defaults = {
             onRender: function() {},
-            renderTimeout: 50,
-            onMove: function(shape, currentCoords, prevCoords) {}
+            onMove: function(shape, currentCoords, prevCoords) {},
+            onShapeFinished: function() {}
         };
         this.o = extend(_defaults, options);
         this.canvasWrapper = wrapper;
@@ -411,6 +411,7 @@ ShapeCreator.prototype = {
                 } else {
                     this.render();
                 }
+                this.o.onShapeFinished(this.currentShape);
                 this.selecting = null;
             }
         }
