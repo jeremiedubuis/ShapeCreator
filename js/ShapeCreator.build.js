@@ -848,7 +848,7 @@ ShapeCreator.prototype = {
     },
 
     export: function() {
-        return this.shapes.map(function(shape) {
+        return this.shapes.filter(function(shape) { return shape.closed;}).map(function(shape) {
             return shape.export();
         });
     },
