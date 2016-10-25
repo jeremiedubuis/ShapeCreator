@@ -331,6 +331,7 @@ ShapeCreator.prototype = {
         });
         this.render(true);
     },
+
     offsetShapes: function(offsetX, offsetY, ignoreBounds) {
         this.shapes.forEach(function(shape){
             shape.move(offsetX, offsetY, ignoreBounds);
@@ -338,6 +339,16 @@ ShapeCreator.prototype = {
         this.render(true);
     },
 
+    removeUnclosed: function() {
+        var _toDelete = [];
+        this.shapes.forEach(function(shape,i) {
+            if (!shape.closed) _toDelete.push(i);
+        })
+
+        for (var i = 0, j = _toDelete.length; i<j; ++i) {
+            this.shapes.splice(_toDelete[i], 1);
+        }
+    },
 
     /**
      * =========================== LISTENERS ===========================
