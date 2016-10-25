@@ -662,6 +662,7 @@ ShapeCreator.prototype = {
         this.shapes.push(_shape);
         _shape.points = [p0, p2];
         _shape.closeShape();
+        this.currentShape = _shape;
         this.render();
     },
 
@@ -671,6 +672,7 @@ ShapeCreator.prototype = {
         this.shapes.push(_shape);
         _shape.points = points;
         _shape.closeShape();
+        this.currentShape = _shape;
         this.render();
     },
 
