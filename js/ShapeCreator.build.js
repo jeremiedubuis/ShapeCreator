@@ -133,7 +133,10 @@ CanvasShape.prototype = {
 
         this.type = type;
         this.points = [];
-        if (bounds1 && bounds2) this.boundaries = [bounds1,bounds2]
+        if (bounds1 && bounds2) this.boundaries = [bounds1,bounds2];
+        this.onUpdate = function() {};
+        this.onMove = function() {};
+        this.onScale = function() {};
     },
 
     closeShape: function() {
@@ -156,6 +159,11 @@ CanvasShape.prototype = {
             if (options.rounded) this.rounded = options.rounded;
             if (options.renderingContext) this.renderingContext = options.renderingContext;
             if (typeof options.renderPoints !=='undefined') this.renderPoints = options.renderPoints;
+
+            if (options.onMove) this.onMove = options.onMove;
+            if (options.onScale) this.onScale = options.onScale;
+            if (options.onUpdate) this.onScale = options.onUpdate;
+
         }
     },
 
@@ -176,6 +184,8 @@ CanvasShape.prototype = {
 
         if (!_outOfBoundsX || ignoreBounds) this.center.x += amountHorizontal;
         if (!_outOfBoundsY || ignoreBounds) this.center.y += amountVertical;
+        this.onMove(this);
+        this.onUpdate(this);
     },
 
     scaleRectByAnchor: function(pointIndex, coordinates) {
@@ -200,6 +210,8 @@ CanvasShape.prototype = {
                 break;
         }
         this.pointsToVectorsFromCenter();
+        this.onScale(this);
+        this.onUpdate(this);
     },
 
     scale: function(amountHorizontal, amountVertical) {
@@ -208,6 +220,8 @@ CanvasShape.prototype = {
         this.scaleY += amountVertical / this.ratio;
         if (this.scaleX<.1) this.scaleX = .1;
         if (this.scaleY<.1) this.scaleY = .1;
+        this.onScale(this);
+        this.onUpdate(this);
     },
 
     scalePercents: function(amountHorizontal, amountVertical) {
@@ -230,12 +244,16 @@ CanvasShape.prototype = {
         });
 
         this.pointsToVectorsFromCenter();
+        this.onScale(this);
+        this.onUpdate(this);
 
     },
 
     polygonScale: function(amountHorizontal, amountVertical) {
         var _scale = (amountHorizontal+ amountVertical) / 2;
         this.scale( _scale, _scale);
+        this.onScale(this);
+        this.onUpdate(this);
     },
 
     getCenter: function() {
