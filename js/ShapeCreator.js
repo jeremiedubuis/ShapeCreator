@@ -477,17 +477,18 @@ ShapeCreator.prototype = {
 
         onMousemove: function(e) {
             var coords = getClickCoordinates(e, this.canvasWrapper);
+            var _e = e.pageX ? e : e.touches[0];
             if ( this.selectedAnchor || this.selectedShape ) {
 
                 // should stop
                 if (this.selectedAnchor  ) {
                     this.selectedAnchor.shape.scaleRectByAnchor( this.selectedAnchor.index, coords);
                     this.render();
-                    this.o.onMove(this.selectedAnchor.shape,{x:e.pageX, y:e.pageY}, this.prevCoords);
+                    this.o.onMove(this.selectedAnchor.shape,{x:_e.pageX, y:_e.pageY}, this.prevCoords);
                 } else if (this.selectedShape,coords) {
                     this.selectedShape.move(coords.x- this.coords.x, coords.y - this.coords.y);
                     this.render();
-                    this.o.onMove(this.selectedShape,{x:e.pageX, y:e.pageY}, this.prevCoords);
+                    this.o.onMove(this.selectedShape,{x:_e.pageX, y:_e.pageY}, this.prevCoords);
                 }
 
                 this.coords = coords;
@@ -495,13 +496,13 @@ ShapeCreator.prototype = {
 
                 // if mouse was down send move event without shape
                 if (this.transformationMousedown) {
-                    this.o.onMove(null,{x:e.pageX, y:e.pageY}, this.prevCoords);
+                    this.o.onMove(null,{x:_e.pageX, y:_e.pageY}, this.prevCoords);
                 }
 
 
             }
             // different from this.coords which is last coords when shape was being selected
-            this.prevCoords = {x:e.pageX, y:e.pageY};
+            this.prevCoords = {x:_e.pageX, y:_e.pageY};
             this.setCursor(coords);
 
         },
