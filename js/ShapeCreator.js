@@ -20,7 +20,8 @@ ShapeCreator.prototype = {
         var _defaults = {
             onRender: function() {},
             onMove: function(shape, currentCoords, prevCoords) {},
-            onShapeFinished: function() {}
+            onShapeFinished: function() {},
+            onShapeSelected: function(shape) {}
         };
         this.o = extend(_defaults, options);
         this.canvasWrapper = wrapper;
@@ -443,6 +444,7 @@ ShapeCreator.prototype = {
                 if (pointAtCoordinates) _this.selectAnchor(pointAtCoordinates[0], pointAtCoordinates[1]);
                 if (!this.selectedShape && !this.selectedAnchor) {
                     this.selectedShape = this.findShapeAtCoordinates(this.coords);
+                    if (this.selectedShape) this.o.onShapeSelected(this.selectedShape);
                 }
 
                 this.transformationMousedown = true;
