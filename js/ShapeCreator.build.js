@@ -26,9 +26,10 @@ var getAngle = function(intersection, point1, point2) {
 };
 var getClickCoordinates= function(e, parentEl) {
     var _offset = offset(parentEl || e.currentTarget);
+    var _e = e.pageX ? e : e.touches[0];
     return {
-        x: e.pageX - _offset.left,
-        y: e.pageY - _offset.top
+        x: _e.pageX - _offset.left,
+        y: _e.pageY - _offset.top
     };
 };
 var getPointInDirection = function(coords1, coords2, distance) {
@@ -467,11 +468,17 @@ ShapeCreator.prototype = {
                 this.canvasWrapper.addEventListener('mousedown', this.fn.selection.onMousedown);
                 this.canvasWrapper.addEventListener('mousemove', this.fn.selection.onMousemove);
                 document.documentElement.addEventListener('mouseup', this.fn.selection.onMouseup);
+                this.canvasWrapper.addEventListener('touchstart', this.fn.selection.onMousedown);
+                this.canvasWrapper.addEventListener('touchmove', this.fn.selection.onMousemove);
+                document.documentElement.addEventListener('touchend', this.fn.selection.onMouseup);
                 break;
             case 'transformation':
                 this.canvasWrapper.addEventListener('mousedown', this.fn.transformation.onMousedown);
                 document.documentElement.addEventListener('mouseup', this.fn.transformation.onMouseup);
                 document.documentElement.addEventListener('mousemove', this.fn.transformation.onMousemove);
+                this.canvasWrapper.addEventListener('touchstart', this.fn.transformation.onMousedown);
+                document.documentElement.addEventListener('touchend', this.fn.transformation.onMouseup);
+                document.documentElement.addEventListener('touchmove', this.fn.transformation.onMousemove);
                 break;
             case 'finalized':
                 this.canvasWrapper.addEventListener('click', this.fn.finalized.onClick);
@@ -494,11 +501,17 @@ ShapeCreator.prototype = {
                     this.canvasWrapper.removeEventListener('mousedown', this.fn.selection.onMousedown);
                     this.canvasWrapper.removeEventListener('mousemove', this.fn.selection.onMousemove);
                     document.documentElement.removeEventListener('mouseup', this.fn.selection.onMouseup);
+                    this.canvasWrapper.removeEventListener('touchstart', this.fn.selection.onMousedown);
+                    this.canvasWrapper.removeEventListener('touchmove', this.fn.selection.onMousemove);
+                    document.documentElement.removeEventListener('touchend', this.fn.selection.onMouseup);
                     break;
                 case 'transformation':
                     this.canvasWrapper.removeEventListener('mousedown', this.fn.transformation.onMousedown);
                     document.documentElement.removeEventListener('mouseup', this.fn.transformation.onMouseup);
                     document.documentElement.removeEventListener('mousemove', this.fn.transformation.onMousemove);
+                    this.canvasWrapper.removeEventListener('touchstart', this.fn.transformation.onMousedown);
+                    document.documentElement.removeEventListener('touchend', this.fn.transformation.onMouseup);
+                    document.documentElement.removeEventListener('touchmove', this.fn.transformation.onMousemove);
                     break;
                 case 'finalized':
                     this.canvasWrapper.removeEventListener('click', this.fn.finalized.onClick);
