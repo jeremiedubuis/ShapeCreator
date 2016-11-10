@@ -83,11 +83,11 @@ ShapeCreator.prototype = {
                 break;
             case 'transformation':
                 this.canvasWrapper.addEventListener('mousedown', this.fn.transformation.onMousedown);
-                document.documentElement.addEventListener('mouseup', this.fn.transformation.onMouseup);
                 document.documentElement.addEventListener('mousemove', this.fn.transformation.onMousemove);
+                document.documentElement.addEventListener('mouseup', this.fn.transformation.onMouseup);
                 this.canvasWrapper.addEventListener('touchstart', this.fn.transformation.onMousedown);
-                document.documentElement.addEventListener('touchend', this.fn.transformation.onMouseup);
                 document.documentElement.addEventListener('touchmove', this.fn.transformation.onMousemove);
+                document.documentElement.addEventListener('touchend', this.fn.transformation.onMouseup);
                 break;
             case 'finalized':
                 this.canvasWrapper.addEventListener('click', this.fn.finalized.onClick);
@@ -116,11 +116,11 @@ ShapeCreator.prototype = {
                     break;
                 case 'transformation':
                     this.canvasWrapper.removeEventListener('mousedown', this.fn.transformation.onMousedown);
-                    document.documentElement.removeEventListener('mouseup', this.fn.transformation.onMouseup);
                     document.documentElement.removeEventListener('mousemove', this.fn.transformation.onMousemove);
+                    document.documentElement.removeEventListener('mouseup', this.fn.transformation.onMouseup);
                     this.canvasWrapper.removeEventListener('touchstart', this.fn.transformation.onMousedown);
-                    document.documentElement.removeEventListener('touchend', this.fn.transformation.onMouseup);
                     document.documentElement.removeEventListener('touchmove', this.fn.transformation.onMousemove);
+                    document.documentElement.removeEventListener('touchend', this.fn.transformation.onMouseup);
                     break;
                 case 'finalized':
                     this.canvasWrapper.removeEventListener('click', this.fn.finalized.onClick);
