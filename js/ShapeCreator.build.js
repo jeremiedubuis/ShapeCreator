@@ -470,6 +470,9 @@ ShapeCreator.prototype = {
                 document.documentElement.addEventListener('mouseup', this.fn.transformation.onMouseup);
                 document.documentElement.addEventListener('mousemove', this.fn.transformation.onMousemove);
                 break;
+            case 'finalized':
+                this.canvasWrapper.addEventListener('click', this.fn.finalized.onClick);
+                break;
         }
         this.listenerContext = context;
 
@@ -493,6 +496,9 @@ ShapeCreator.prototype = {
                     this.canvasWrapper.removeEventListener('mousedown', this.fn.transformation.onMousedown);
                     document.documentElement.removeEventListener('mouseup', this.fn.transformation.onMouseup);
                     document.documentElement.removeEventListener('mousemove', this.fn.transformation.onMousemove);
+                    break;
+                case 'finalized':
+                    this.canvasWrapper.removeEventListener('click', this.fn.finalized.onClick);
                     break;
             }
         }
@@ -736,11 +742,15 @@ ShapeCreator.prototype = {
         var _toDelete = [];
         this.shapes.forEach(function(shape,i) {
             if (!shape.closed) _toDelete.push(i);
-        })
+        });
 
         for (var i = 0, j = _toDelete.length; i<j; ++i) {
             this.shapes.splice(_toDelete[i], 1);
         }
+    },
+
+    finalize: function() {
+        this.addListeners('finalized');
     },
 
     /**
@@ -834,7 +844,6 @@ ShapeCreator.prototype = {
                 if (pointAtCoordinates) _this.selectAnchor(pointAtCoordinates[0], pointAtCoordinates[1]);
                 if (!this.selectedShape && !this.selectedAnchor) {
                     this.selectedShape = this.findShapeAtCoordinates(this.coords);
-                    if (this.selectedShape) this.o.onShapeSelected(this.selectedShape);
                 }
 
                 this.transformationMousedown = true;
@@ -877,6 +886,14 @@ ShapeCreator.prototype = {
             this.selectedShape = null;
             this.canvas.style.cursor = 'auto';
             this.transformationMousedown = false;
+        }
+    },
+
+    finalized: {
+        onClick: function(e) {
+            var coords = getClickCoordinates(e);
+                var selectedShape = this.findShapeAtCoordinates(coords);
+                if (selectedShape) this.o.onShapeSelected(selectedShape);
         }
     },
 
