@@ -697,24 +697,24 @@ ShapeCreator.prototype = {
         }
     },
 
-    createRectangleArea: function(p0, p2, options) {
+    createRectangleArea: function(p0, p2, options, silent) {
         var _shape = new CanvasShape({x: 0, y:0}, {x:this.canvas.width, y: this.canvas.height}, 'rectangle');
         _shape.defineOptions(options);
         this.shapes.push(_shape);
         _shape.points = [p0, p2];
         _shape.closeShape();
         this.currentShape = _shape;
-        this.render();
+        this.render(silent);
     },
 
-    createFreeArea: function(points, options) {
+    createFreeArea: function(points, options, silent) {
         var _shape = new CanvasShape({x: 0, y:0}, {x:this.canvas.width, y: this.canvas.height}, 'freehand');
         _shape.defineOptions(options);
         this.shapes.push(_shape);
         _shape.points = points;
         _shape.closeShape();
         this.currentShape = _shape;
-        this.render();
+        this.render(silent);
     },
 
     findPointAtCoordinates: function(coords ) {
@@ -868,7 +868,7 @@ ShapeCreator.prototype = {
 
         onMousemove: function(e) {
             var coords = getClickCoordinates(e, this.canvasWrapper);
-            var _e = e.pageX ? e : e.touches[0];
+            var _e = typeof e.pageX !== 'undefined' ? e : e.touches[0];
             if ( this.selectedAnchor || this.selectedShape ) {
 
                 // should stop
