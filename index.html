@@ -52,12 +52,18 @@
         imgCanvas.getContext('2d').drawImage(img, 0, 0, imgCanvas.width, imgCanvas.height * (img.width / img.height));
     };
     img.src='image.jpg';
-    var aS = new ShapeCreator(imgWrapper, imgWrapper.getElementsByClassName('canvas-selection')[0], {background: false, drawPoint: function(point) {
-        this.c2d.beginPath();
-        this.c2d.arc(point.x,point.y, 4, 0, Math.PI * 2);
-        this.c2d.fill();
-        this.c2d.closePath();
-    }});
+    var aS = new ShapeCreator(imgWrapper, imgWrapper.getElementsByClassName('canvas-selection')[0], {
+        background: false,
+        drawPoint: function(point) {
+            this.c2d.beginPath();
+            this.c2d.arc(point.x,point.y, 4, 0, Math.PI * 2);
+            this.c2d.fill();
+            this.c2d.closePath();
+        },
+        onRender: function() {
+            aS.darkenAroundRectangles(imgCanvas.getContext('2d'));
+        }
+    });
 
     document.getElementsByClassName('js-rectangle')[0].addEventListener('click', function() {
         aS.startSelection('rectangle', {

@@ -563,11 +563,6 @@ ShapeCreator.prototype = {
                     this.drawRoundedRect(points);
                 }
                 this.c2d.closePath();
-                if (this.o.background) {
-                    this.c2d.globalCompositeOperation = 'destination-out';
-                    this.c2d.fill();
-                    this.c2d.globalCompositeOperation = 'source-over';
-                }
                 break;
         }
         if (shape.renderingContext) shape.renderingContext(this.c2d);
@@ -602,7 +597,6 @@ ShapeCreator.prototype = {
     render: function(silent) {
 
         this.clearCanvas();
-        if (this.o.background) this.renderBackground();
         this.shapes.forEach(this.renderShape.bind(this));
 
         if (!silent) {
@@ -619,11 +613,28 @@ ShapeCreator.prototype = {
         if (shape.renderPoints) this.renderPoints( shape, points);
     },
 
-    renderBackground: function() {
+    darkenAroundRectangles: function(imageC2D) {
         this.c2d.rect(0,0,this.canvas.width, this.canvas.height);
         this.c2d.fillStyle = 'rgba(0,0,0,0.5)';
         this.c2d.fill();
         this.c2d.closePath();
+
+        var _shapes = this.shapes.filter(function(shape) {
+            return shape.type === 'rectangle';
+        });
+
+        var _data = [];
+        _shapes.forEach(function(shape) {
+            _data.push({
+                    data: imageC2D.getImageData( shape.points[0].x, shape.points[0].y, shape.points[2].x - shape.points[0].x, shape.points[2].y - shape.points[0].y),
+                    x:  shape.points[0].x,
+                    y: shape.points[0].y
+            });
+        });
+        var _this = this;
+        _data.forEach(function(d){
+            _this.c2d.putImageData(d.data, d.x, d.y);
+        });
     },
 
     resetSelection: function() {
@@ -909,8 +920,8 @@ ShapeCreator.prototype = {
     finalized: {
         onClick: function(e) {
             var coords = getClickCoordinates(e);
-                var selectedShape = this.findShapeAtCoordinates(coords);
-                if (selectedShape) this.o.onShapeSelected(selectedShape);
+            var selectedShape = this.findShapeAtCoordinates(coords);
+            if (selectedShape) this.o.onShapeSelected(selectedShape);
         }
     },
 
