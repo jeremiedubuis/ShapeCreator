@@ -598,7 +598,7 @@ ShapeCreator.prototype = {
     render: function(silent) {
 
         this.clearCanvas();
-        this.o.onBeforeRender();
+        this.o.onBeforeRender(this);
         this.shapes.forEach(this.renderShape.bind(this));
 
         if (!silent) {
