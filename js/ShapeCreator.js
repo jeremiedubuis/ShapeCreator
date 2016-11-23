@@ -18,6 +18,7 @@ ShapeCreator.prototype = {
     init: function(wrapper, canvas, options) {
 
         var _defaults = {
+            onBeforeRender: function() {},
             onRender: function() {},
             onMove: function(shape, currentCoords, prevCoords) {},
             onShapeFinished: function() {},
@@ -206,6 +207,7 @@ ShapeCreator.prototype = {
     render: function(silent) {
 
         this.clearCanvas();
+        this.o.onBeforeRender();
         this.shapes.forEach(this.renderShape.bind(this));
 
         if (!silent) {
@@ -222,7 +224,7 @@ ShapeCreator.prototype = {
         if (shape.renderPoints) this.renderPoints( shape, points);
     },
 
-    darkenAroundRectangles: function(imageC2D) {
+    clearAroundRectangles: function() {
         this.c2d.rect(0,0,this.canvas.width, this.canvas.height);
         this.c2d.fillStyle = 'rgba(0,0,0,0.5)';
         this.c2d.fill();
@@ -231,18 +233,9 @@ ShapeCreator.prototype = {
         var _shapes = this.shapes.filter(function(shape) {
             return shape.type === 'rectangle';
         });
-
-        var _data = [];
-        _shapes.forEach(function(shape) {
-            _data.push({
-                    data: imageC2D.getImageData( shape.points[0].x, shape.points[0].y, shape.points[2].x - shape.points[0].x, shape.points[2].y - shape.points[0].y),
-                    x:  shape.points[0].x,
-                    y: shape.points[0].y
-            });
-        });
         var _this = this;
-        _data.forEach(function(d){
-            _this.c2d.putImageData(d.data, d.x, d.y);
+        _shapes.forEach(function(shape) {
+            _this.c2d.clearRect(shape.points[0].x, shape.points[0].y, shape.points[2].x - shape.points[0].x, shape.points[2].y - shape.points[0].y);
         });
     },
 

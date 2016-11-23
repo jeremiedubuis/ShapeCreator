@@ -60,8 +60,8 @@
             this.c2d.fill();
             this.c2d.closePath();
         },
-        onRender: function() {
-            aS.darkenAroundRectangles(imgCanvas.getContext('2d'));
+        onBeforeRender: function() {
+            aS.clearAroundRectangles();
         }
     });
 
